@@ -1,0 +1,83 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "orlwx"
+version = "0.1.0"
+description = "Orlando weather REST API and MCP endpoints using FastAPI-MCP"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.14"
+authors = [
+    { name = "Michael duPont" },
+]
+keywords = ["weather", "orlando", "fastapi", "mcp", "openweathermap"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Framework :: FastAPI",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+]
+dependencies = [
+    "fastapi>=0.115.0",
+    "fastapi-mcp>=0.3.1",
+    "httpx>=0.28.0",
+    "pydantic>=2.10.0",
+    "pydantic-settings>=2.6.0",
+    "uvicorn>=0.32.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "mypy>=1.13.0",
+    "pytest>=8.3.0",
+    "pytest-asyncio>=0.24.0",
+    "pytest-httpx>=0.34.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/devdupont/orlwx"
+Repository = "https://github.com/devdupont/orlwx"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/orlwx"]
+
+[tool.hatch.envs.default]
+installer = "uv"
+features = ["dev"]
+
+[tool.hatch.envs.default.scripts]
+dev = "uvicorn orlwx.main:app --reload"
+
+[tool.hatch.envs.types]
+installer = "uv"
+features = ["dev"]
+
+[tool.hatch.envs.types.scripts]
+check = "mypy src/orlwx"
+
+[tool.hatch.envs.hatch-test]
+extra-dependencies = [
+    "pytest-asyncio>=0.24.0",
+    "pytest-httpx>=0.34.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.mypy]
+python_version = "3.14"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+
+[[tool.mypy.overrides]]
+module = ["fastapi_mcp.*"]
+ignore_missing_imports = true
