@@ -65,5 +65,5 @@ async def test_missing_api_key() -> None:
     """Test that missing API key raises ValueError."""
     service = WeatherService(api_key="")
 
-    with pytest.raises(ValueError, match="API key is not configured"):
+    with pytest.raises(ValueError, match="OpenWeatherMap API key is not configured"):
         await service.get_current_weather()

@@ -101,10 +101,10 @@ async def test_get_weather_api_key_error(async_client: AsyncClient) -> None:
     """Test that missing API key returns 500 error."""
     with patch("orlwx.main.WeatherService") as mock_service_class:
         mock_service = AsyncMock()
-        mock_service.get_current_weather.side_effect = ValueError("API key is not configured")
+        mock_service.get_current_weather.side_effect = ValueError("OpenWeatherMap API key is not configured")
         mock_service_class.return_value = mock_service
 
         response = await async_client.get("/weather")
 
         assert response.status_code == 500
-        assert "API key is not configured" in response.json()["detail"]
+        assert "OpenWeatherMap API key is not configured" in response.json()["detail"]
